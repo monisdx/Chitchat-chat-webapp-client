@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { jwtDecode } from 'jwt-decode';
 
-const Navbar = ({sidebar,setsidebar}) => {
+const Navbar = ({setsidebar}) => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -27,7 +27,8 @@ const Navbar = ({sidebar,setsidebar}) => {
         if (token) {
           const decodedToken = jwtDecode(token);
     
-          if (decodedToken.exp * 1000 < new Date().getTime()) logout();
+          if (decodedToken.exp * 1000 < new Date().getTime())
+          logout();
         }
     
     
@@ -36,10 +37,10 @@ const Navbar = ({sidebar,setsidebar}) => {
 
 
   return (
-    <nav className={`paddingx w-full flex items-center py-3 fixed top-0 z-10 bg-black-100 ${sidebar && 'opacity-20'} shadow-card `}>
+    <nav className={`paddingx w-full flex items-center py-3 fixed top-0 z-10 bg-black-100 shadow-card `}>
     <div className='w-full flex flex-col xs:flex-row gap-4 xs:gap-0 justify-between items-center mx-auto'>
       <span className="material-icons-outlined  text1-gradient text-[37px] cursor-pointer mr-8 absolute left-[12px] xs:relative" onClick={()=>setsidebar(true)}>manage_search</span>
-      <div className='flex items-center gap-2'>
+      <div className='flex items-center gap-2'  >
         <img src={logo} alt="logo" className='w-9 h-9 object-contain'/>
         <p className='text1-gradient text-[18px] font-bold cursor-pointer flex'>
           Chichat

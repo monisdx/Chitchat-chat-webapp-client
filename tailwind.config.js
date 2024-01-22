@@ -28,6 +28,7 @@ module.exports = {
       backgroundImage: {
         "hero-pattern": "url('/src/assets/herobg.png')",
         "chat-pattern": "url('/src/assets/pattern2.png')",
+        purplegradient: "linear-gradient(45deg,#d4cef3,#915eff )",
       },
    
     },

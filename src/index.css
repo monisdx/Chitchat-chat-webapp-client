@@ -37,13 +37,52 @@
  
 }
 
+@layer components { 
+  .btn1-gradient {
+    background: linear-gradient(45deg,#d4cef3,#915eff,#d4cef3 );
+    background-size: 200%;
+  }
+
+  .text1-gradient {
+    background: radial-gradient(
+      64.18% 64.18% at 71.16% 35.69%,
+      #edeaff 0.89%,
+      #d4cef3 17.23%,
+      #c7bdf5 42.04%,
+      #b4a8f3 55.12%,
+      #9486e2 71.54%,
+      #8270E2 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+  }
+
+  .black-gradient {
+    background: #000000; /* fallback for old browsers */
+    background: -webkit-linear-gradient(
+      to right,
+      #434343,
+      #000000
+    ); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(
+      to right,
+      #434343,
+      #000000
+    ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  }
+  
+}
+
+
 .other_msg {
-  fill: #2D3742;
+  background: #2D3742;
   backdrop-filter: blur(7.5px);
 }
 
 .my_msg {
-  border-radius: 20px var(--Number, 0px) 4px 20px;
+  /* border-radius: 20px var(--Number, 0px) 4px 20px; */
   background: linear-gradient(82deg, #5042A0 5.62%, #424BA0 106.89%);
 }
 
@@ -134,6 +173,11 @@
   text-fill-color: transparent;
 }
 
+.purple-gradient {
+  background: "#8270E2";
+  background: linear-gradient(90.13deg, #8270E2.9%, #d4cef3 97.5%);
+  background: -webkit-linear-gradient(-90.13deg, #8270E2 1.9%, #d4cef3 97.5%);
+}
 
 .green-pink-gradient {
   background: "#00cea8";

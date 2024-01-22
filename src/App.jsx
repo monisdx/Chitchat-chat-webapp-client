@@ -9,13 +9,15 @@ function App() {
   const user = JSON.parse(localStorage.getItem('profile'))
 
   console.log(user);
+  console.log(user);
 
   return (
     <>
     <BrowserRouter>
     <Routes>
-      <Route path="/" element={!user ? <HomePage/> : <Navigate to="/chat"/>}/>
+      <Route path="/" element={<HomePage/>}/>
       <Route path="/chat" element={<ChatPage/>}/>
+      <Route path="/chat/search" element={<ChatPage/>}/>
     </Routes>
     </BrowserRouter>
     </>
