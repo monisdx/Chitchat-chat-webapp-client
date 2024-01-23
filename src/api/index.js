@@ -19,6 +19,9 @@ export const fetchUsersBySearch = (searchQuery) => API.get(`/user/search?searchQ
 export const createChat = (id) => API.post('/chat', {userId: id});
 export const userChats = () => API.get(`/chat`);
 export const createGroupChat = (form) => API.post('/chat/group',form)
+export const renameGroupChat = (chatId, chatname) => API.put('/chat/renamegroup',{chatId, chatname})
+export const addGroupChat = (chatId, userId) => API.put('/chat/addgroup',{chatId,userId});
+export const removeGroupChat = (chatId, userId) => API.put('/chat/removegroup',{chatId,userId});
 
-export const getMessages = (id) => API.get(`/message/${id}`);
-export const addMessage = (data) => API.post('/message', data);
+export const getMessages = (chatId) => API.get(`/message/${chatId}`);
+export const addMessage = (text, chatId) => API.post('/message', {text, chatId});

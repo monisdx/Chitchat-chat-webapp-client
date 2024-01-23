@@ -2,10 +2,10 @@ import React, {useEffect,useState} from 'react';
 import Chatbox from "./components/Chatbox";
 import Chatlist from "./components/Chatlist";
 import { useSelector, useDispatch } from 'react-redux';
-
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import GroupModel from './components/GroupModel';
+import UpdateModel from './components/UpdateModel';
 
 
 const ChatPage = () => {
@@ -14,9 +14,10 @@ const ChatPage = () => {
   const [groupmodel, setgroupmodel] = useState(false);
   const [updatemodel, setupdatemodel] = useState(false);
   const [selectedchat, setselectedchat] = useState(null);
-  
+  const [fetch, setfetch] = useState(false);
+  console.log(selectedchat);
 
-
+console.log(updatemodel);
 
 
   return (
@@ -30,6 +31,7 @@ const ChatPage = () => {
           <Chatbox selectedchat={selectedchat} setselectedchat={setselectedchat} setupdatemodel={setupdatemodel}/>
         </div>
       </div>
+      <UpdateModel selectedchat={selectedchat} setselectedchat={setselectedchat} updatemodel={updatemodel} setupdatemodel={setupdatemodel}/>
       <GroupModel groupmodel={groupmodel} setgroupmodel={setgroupmodel}/>
       <Sidebar sidebar={sidebar} setsidebar={setsidebar}/>   
     </div>

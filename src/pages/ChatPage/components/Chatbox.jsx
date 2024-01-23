@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Chatbox = ({selectedchat,setselectedchat}) => {
+const Chatbox = ({selectedchat,setselectedchat,setupdatemodel}) => {
   const user = JSON.parse(localStorage.getItem('profile'))
   console.log(selectedchat);
   return (

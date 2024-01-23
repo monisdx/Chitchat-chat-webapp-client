@@ -1,5 +1,6 @@
 
 import React, {useState} from 'react'
+import { useNavigate } from 'react-router-dom';
 import { useDispatch , useSelector } from 'react-redux';
 import { getUsersBySearch } from "../../../actions/user";
 import { creategroupchat } from "../../../actions/chat";
@@ -8,9 +9,9 @@ import loader from '../../../assets/loader.svg';
 const GroupModel = ({groupmodel, setgroupmodel}) => {
   
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const {users,isLoading} = useSelector((state)=> state.users);
   const [selectedusers, setselectedusers] = useState([]);
-  const [userid, seuserid] = useState('');
   const [name, setname] = useState('');
 
   const [search, setsearch] = useState('');
@@ -31,8 +32,10 @@ const GroupModel = ({groupmodel, setgroupmodel}) => {
   }
 
   const searchpost = () => {
+    console.log('hii')
     if(search.trim()){
       dispatch(getUsersBySearch(search));
+      console.log(search);
       navigate(`/chat/search?searchQuery=${search || 'none'}`);
     }
     else{
@@ -51,18 +54,22 @@ const GroupModel = ({groupmodel, setgroupmodel}) => {
     setselectedusers(selectedusers.filter((user) => user._id!==id));
   }
  
-  console.log(selectedusers);
+
   
   const handlesubmit = (e)=>{
     e.preventDefault();
+    if(selectedusers.length<2){
+      return;
+    }
     const form ={name: name, users: selectedusers.map((u)=>u._id)}
 
     dispatch(creategroupchat(form));
     
-    // navigate('/chat');
-    // setsearch('');
-    // dispatch({type:'RESET_USERS'});
-    handleback();
+    
+    // setgroupmodel(!groupmodel);
+    navigate('/chat');
+    setsearch('');
+    dispatch({type:'RESET_USERS'});
 
   }
   return (

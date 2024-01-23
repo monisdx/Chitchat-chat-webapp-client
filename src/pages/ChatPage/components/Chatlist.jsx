@@ -33,14 +33,16 @@ const Chatlist = ({selectedchat, setselectedchat , setgroupmodel}) => {
       {!isLoading ? (
             <>
             {chats.length ? (
-              <div className="flex flex-col justify-center items-start w-full mt-4 gap-2">
+              <div className="flex flex-col justify-center items-start w-full  mt-4 gap-2 scrollbar_style overflow-y-auto">
               {chats.map((chat,index) => (
 
                 <div key={`chat-${index}`} className={`flex flex-row items-center py-5 px-2 gap-4 w-full ${selectedchat===chat && 'btn1-gradient'} bg-tertiary group  hover:btn1-gradient rounded-lg cursor-pointer`} onClick={ ()=> setselectedchat(chat)}>
+                  
                   {chat?.isgroupchat? (
                     <>
-                    <div className="flex justify-center items-center font-bold text-[20px] h-9 w-9 rounded-full  group-hover:black-gradient btn1-gradient  ">
-                      <span className="text-primary group-hover:text1-gradient">{chat.chatname.charAt(0)}</span>
+                    {/* {console.log(selectedchat===chat)} */}
+                    <div className={`flex justify-center items-center font-bold text-[20px] h-9 w-9 rounded-full ${selectedchat === chat && 'btn1-gradient'} group-hover:black-gradient btn1-gradient  `}>
+                      <span className={`text-primary ${selectedchat === chat && 'text1-gradient'} group-hover:text1-gradient`}>{chat.chatname.charAt(0)}</span>
                     </div>  
                     <div className="flex flex-col gap-1">
                       <p className={`text-[16px] text-white ${selectedchat===chat && 'text-primary'}  group-hover:text-primary font-medium`}>{chat.chatname}</p>
@@ -48,6 +50,7 @@ const Chatlist = ({selectedchat, setselectedchat , setgroupmodel}) => {
                     </>
                   ) : (
                     <>
+                    {/* {console.log(selectedchat===chat)} */}
                     <div className={`flex justify-center items-center font-bold text-[20px] h-9 w-9 rounded-full ${selectedchat===chat && 'black-gradient'} group-hover:black-gradient  btn1-gradient  `}>
                       <span className={`text-primary ${selectedchat===chat && 'text1-gradient'} group-hover:text1-gradient `}>{chat.users[0]._id===user?.result?._id ? chat.users[1].name.charAt(0) :chat.users[0].name.charAt(0) }</span>
                     </div>

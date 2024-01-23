@@ -39,3 +39,45 @@ export const creategroupchat = (form) => async(dispatch) =>{
         console.log(error);
     }
 }
+
+export const renamegroupchat = (chatId ,chatname) =>async(dispatch) =>{
+    try{
+        dispatch({type: 'START_LOADING'});
+        const {data:{data}} = await api.renameGroupChat(chatId,chatname);
+        console.log(data);
+        dispatch({type: 'RENAME_GROUP_CHAT'});
+        dispatch({type: 'END_LOADING'});
+
+    }
+    catch(error){
+        console.log(error);
+    }
+}
+
+export const addgroupchat = (chatId ,userId) =>async(dispatch) =>{
+    try{
+        dispatch({type: 'START_LOADING'});
+        const {data:{data}} = await api.addGroupChat(chatId,userId);
+        console.log(data);
+        dispatch({type: 'ADD_GROUP_CHAT'});
+        dispatch({type: 'END_LOADING'});
+
+    }
+    catch(error){
+        console.log(error);
+    }
+}
+
+export const removegroupchat = (chatId ,userId) =>async(dispatch) =>{
+    try{
+        dispatch({type: 'START_LOADING'});
+        const {data:{data}} = await api.removeGroupChat(chatId,userId);
+        console.log(data);
+        dispatch({type: 'remove_GROUP_CHAT'});
+        dispatch({type: 'END_LOADING'});
+
+    }
+    catch(error){
+        console.log(error);
+    }
+}

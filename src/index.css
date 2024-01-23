@@ -75,6 +75,21 @@
   
 }
 
+div.scrollbar_style::-webkit-scrollbar{
+  width: 0.5em;
+}
+
+ ::-webkit-scrollbar-track{
+  background: #100d25;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb{
+  background: #aaa6c3;
+  border-radius: 10px;
+  border: 1px solid #100d25;
+}
+
 
 .other_msg {
   background: #2D3742;
