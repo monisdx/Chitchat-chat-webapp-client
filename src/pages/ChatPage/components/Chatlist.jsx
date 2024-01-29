@@ -10,15 +10,19 @@ const Chatlist = ({selectedchat, setselectedchat , setgroupmodel}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const {chats,isLoading} = useSelector((state)=> state.chats);
+  const {chats,chat,chat1,isLoading} = useSelector((state)=> state.chats);
   const user = JSON.parse(localStorage.getItem('profile'));
 
+
+  
+ 
+  useEffect(()=>{
+    console.log('fetch')
+    dispatch(userchats());
+  },[chat]);
+  
   console.log(chats);
 
-  useEffect(()=>{
-    dispatch(userchats());
-  },[dispatch]);
-  
 
   return (
     <div className="flex flex-col bg-black-100  p-4 w-full rounded-[30px]">
@@ -36,27 +40,26 @@ const Chatlist = ({selectedchat, setselectedchat , setgroupmodel}) => {
               <div className="flex flex-col justify-center items-start w-full  mt-4 gap-2 scrollbar_style overflow-y-auto">
               {chats.map((chat,index) => (
 
-                <div key={`chat-${index}`} className={`flex flex-row items-center py-5 px-2 gap-4 w-full ${selectedchat===chat && 'btn1-gradient'} bg-tertiary group  hover:btn1-gradient rounded-lg cursor-pointer`} onClick={ ()=> setselectedchat(chat)}>
+                <div key={`chat-${index}`} className={`flex flex-row items-center py-5 px-2 gap-4 w-full ${chat1?._id===chat?._id ? 'my_msg' :'bg-tertiary'}  group  hover:my_msg rounded-lg cursor-pointer`} onClick={ ()=> dispatch({type: 'FETCH_CHAT', payload: chat})}>
                   
                   {chat?.isgroupchat? (
                     <>
-                    {/* {console.log(selectedchat===chat)} */}
-                    <div className={`flex justify-center items-center font-bold text-[20px] h-9 w-9 rounded-full ${selectedchat === chat && 'btn1-gradient'} group-hover:black-gradient btn1-gradient  `}>
-                      <span className={`text-primary ${selectedchat === chat && 'text1-gradient'} group-hover:text1-gradient`}>{chat.chatname.charAt(0)}</span>
+                    <div className={`flex justify-center items-center font-bold text-[20px] h-9 w-9 rounded-full ${chat1?._id === chat?._id ? 'black-gradient' : 'my_msg'} group-hover:black-gradient   `}>
+                      <span className={` ${chat1?._id === chat?._id ? 'text2-gradient' : 'text-primary'} group-hover:text2-gradient`}>{chat.chatname.charAt(0)}</span>
                     </div>  
                     <div className="flex flex-col gap-1">
-                      <p className={`text-[16px] text-white ${selectedchat===chat && 'text-primary'}  group-hover:text-primary font-medium`}>{chat.chatname}</p>
+                      <p className={`text-[16px]  ${chat1?._id===chat?._id ? 'text-primary': 'text-white'}  group-hover:text-primary font-medium`}>{chat.chatname}</p>
                     </div>
                     </>
                   ) : (
                     <>
-                    {/* {console.log(selectedchat===chat)} */}
-                    <div className={`flex justify-center items-center font-bold text-[20px] h-9 w-9 rounded-full ${selectedchat===chat && 'black-gradient'} group-hover:black-gradient  btn1-gradient  `}>
-                      <span className={`text-primary ${selectedchat===chat && 'text1-gradient'} group-hover:text1-gradient `}>{chat.users[0]._id===user?.result?._id ? chat.users[1].name.charAt(0) :chat.users[0].name.charAt(0) }</span>
+                   
+                    <div className={`flex justify-center items-center font-bold text-[20px] h-9 w-9 rounded-full ${chat1?._id===chat?._id ? 'black-gradient' : 'my_msg'} group-hover:black-gradient`}>
+                      <span className={`${chat1?._id === chat?._id ? 'text2-gradient' : 'text-primary'} group-hover:text2-gradient `}>{chat.users[0]._id===user?.result?._id ? chat.users[1].name.charAt(0) :chat.users[0].name.charAt(0) }</span>
                     </div>
                     <div className="flex flex-col gap-1">
-                      <p className={`text-[16px] text-white ${selectedchat===chat && 'text-primary'}  group-hover:text-primary font-medium`}>{chat.users[0]._id===user?.result?._id ? chat.users[1].name :chat.users[0].name}</p>
-                      <p className={`text-[12px] text-secondary ${selectedchat===chat && 'text-primary'} group-hover:text-primary font-medium`}>{chat.users[0]._id===user?.result?._id ? chat.users[1].email :chat.users[0].email}</p>
+                      <p className={`text-[16px]  ${chat1?._id === chat?._id ? 'text-primary':'text-white'}  group-hover:text-primary font-medium`}>{chat.users[0]._id===user?.result?._id ? chat.users[1].name :chat.users[0].name}</p>
+                      <p className={`text-[12px]  ${chat1?._id === chat?._id ? 'text-primary' :'text-secondary'} group-hover:text-primary font-medium`}>{chat.users[0]._id===user?.result?._id ? chat.users[1].email :chat.users[0].email}</p>
                     </div>
                     </>
                   )}

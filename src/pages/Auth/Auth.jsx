@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {signin, signup} from '../../actions/auth'
+import loader from '../../assets/loaderblack.svg';
 
 const Auth = () => {
   const [form, setform] = useState({
@@ -14,9 +15,12 @@ const Auth = () => {
   const [isSignup, setisSignup] = useState(false);
   const [showpassword, setshowpassword] = useState(false);
   const [showcpassword, setshowcpassword] = useState(false);
+  const {isLoading} = useSelector((state)=> state.auth);
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  console.log(isLoading);
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -150,9 +154,13 @@ const Auth = () => {
         <div className="flex justify-center items-center">
           <button
             type="submit"
-            className="w-full px-4 py-2 font-medium text-[18px] rounded-[10px] text-primary btn1-gradient duration-500 hover:bg-right outline-none border-none"
+            className="w-full flex justify-center px-4 py-2 font-medium text-[18px] rounded-[10px] text-primary btn1-gradient duration-500 hover:bg-right outline-none border-none"
           >
-            {isSignup ? "Sign Up" : "Sign In"}
+            {isLoading ? (
+                  <img src={loader} alt="loding" className='h-[27px] w-[27px]' />
+            ) : (
+              <span>{isSignup ? "Sign Up" : "Sign In"}</span>
+            )}
           </button>
         </div>
       </form>

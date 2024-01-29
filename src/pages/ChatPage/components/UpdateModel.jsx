@@ -11,16 +11,21 @@ const UpdateModel = ({selectedchat, setselectedchat, updatemodel, setupdatemodel
     const navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem('profile'))
     const {users,isLoading} = useSelector((state)=> state.users);
+    const {chat,chat1} = useSelector((state)=>state.chats);
     const [selectedusers, setselectedusers] = useState([]);
     const [name, setname] = useState('');
     const [search, setsearch] = useState('');
+    //  console.log(selectedchat);
 
+    console.log(chat);
+    console.log(chat1);
+    console.log(isLoading);
     useEffect(()=>{
-        if(selectedchat){
-            setname(selectedchat?.chatname);
-            setselectedusers(selectedchat?.users);
+        if(chat1){
+            setname(chat1?.chatname);
+            setselectedusers(chat1?.users);
         }
-      },[selectedchat]);
+      },[chat1]);
   
   
     const handlekeypress = (e) => {
@@ -36,7 +41,7 @@ const UpdateModel = ({selectedchat, setselectedchat, updatemodel, setupdatemodel
       navigate('/chat');
       setname('')
       setsearch('');
-      dispatch({type:'RESET_USERS'});
+      // dispatch({type:'RESET_USERS'});
     }
   
     const searchpost = () => {
@@ -50,39 +55,51 @@ const UpdateModel = ({selectedchat, setselectedchat, updatemodel, setupdatemodel
       }
     }
   
-    const handlerename = () => {
+    const handlerename = async() => {
       console.log('rename')
-      dispatch(renamegroupchat(selectedchat._id,name));
-      setselectedchat(null);
-      console.log(selectedchat);
-      
-      handleback();
+      await dispatch(renamegroupchat(chat1?._id,name));
+      // setselectedchat(chat);
+      // await dispatch({type: 'FETCH_CHAT', payload: chat})
+      setupdatemodel(!updatemodel)
+      // console.log(selectedchat);
+      // console.log('rename')
+      // handleback();
     }
 
-    const handleadd = (id) => {
+    const handleadd = async(id) => {
 
-      if(selectedchat.users.find((u)=>u._id === id)){
+      if(chat1?.users.find((u)=>u._id === id)){
         console.log("user already exist");
         return
       }
       console.log('add')
-      dispatch(addgroupchat(selectedchat._id,id))
-      setselectedchat(null);
+      await dispatch(addgroupchat(chat1?._id,id))
+
+      // await dispatch({type: 'FETCH_CHAT', payload: chat})
       
-      handleback();
+
+      // setselectedchat(chat);
+      // console.log('add')
+      setupdatemodel(!updatemodel)
+      
+      // handleback();
     }
 
-    const handleremove = (id) => {
+    const handleremove = async(id) => {
 
-      if(selectedchat?.groupAdmin?._id !== user?.result?._id && user?.result?._id !== id ){
+      if(chat1?.groupAdmin?._id !== user?.result?._id && user?.result?._id !== id ){
         console.log("only admin can remove users");
         return
       }
       console.log('remove');
-      dispatch(removegroupchat(selectedchat._id,id))
-      setselectedchat(null);
+      await dispatch(removegroupchat(chat1?._id,id))
+
+      // await dispatch({type: 'FETCH_CHAT', payload: chat})
+      // setselectedchat(chat);
+      // console.log('remove')
+      setupdatemodel(!updatemodel)
       
-      handleback();
+      // handleback();
     }
     
 
@@ -105,7 +122,7 @@ const UpdateModel = ({selectedchat, setselectedchat, updatemodel, setupdatemodel
               </button>
         
               </label>
-              {selectedchat?.groupAdmin?._id === user?.result?._id && (
+              {chat1?.groupAdmin?._id === user?.result?._id && (
                 <label className='flex flex-col'>
                 <input
                   type="text"

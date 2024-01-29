@@ -85,13 +85,13 @@ const Sidebar = ({ sidebar, setsidebar }) => {
               <div className="flex flex-col justify-center items-start w-full mt-4 gap-2">
               
               {users.map((user,index) => (
-                <div key={`user-${index}`} className="flex flex-row items-center py-5 px-2 gap-4 w-full bg-tertiary  hover:btn1-gradient rounded-lg cursor-pointer" onClick={ ()=> {handlecreatechat(user._id)}}>
-                 <div className="flex justify-center items-center font-bold text-[20px] h-9 w-9 rounded-full  btn1-gradient  ">
-                   <span className="text-primary ">{user.name.charAt(0)}</span>
+                <div key={`user-${index}`} className="flex flex-row items-center py-5 px-2 gap-4 w-full bg-tertiary group hover:my_msg rounded-lg cursor-pointer" onClick={ ()=> {handlecreatechat(user._id)}}>
+                 <div className={`flex justify-center items-center font-bold text-[20px] h-9 w-9 rounded-full  my_msg  group-hover:black-gradient `}>
+                   <span className={`text-primary group-hover:text2-gradient `}>{user.name.charAt(0)}</span>
                  </div>
                  <div className="flex flex-col gap-1">
-                 <p className="text-[16px] text-white  font-medium">{user.name}</p>
-                 <p className="text-[12px] text-secondary  font-medium">{user.email}</p>
+                 <p className={`text-[16px] text-white group-hover:text-primary font-medium`}>{user.name}</p>
+                 <p className={`text-[12px] text-secondary group-hover:text-primary font-medium`}>{user.email}</p>
                  </div>
                </div>
 

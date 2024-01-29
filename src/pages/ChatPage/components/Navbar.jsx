@@ -8,17 +8,14 @@ const Navbar = ({setsidebar}) => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const location = useLocation();
     const [user, setuser] = useState(JSON.parse(localStorage.getItem('profile')));
-
-
+   
 
 
     const logout = () => {
         dispatch({type: 'LOGOUT'});
-        
-        setuser(null);
         navigate('/');
+        setuser(null);
       }
     
       useEffect(() => {
@@ -27,14 +24,12 @@ const Navbar = ({setsidebar}) => {
         if (token) {
           const decodedToken = jwtDecode(token);
     
-          if (decodedToken.exp * 1000 < new Date().getTime())
-          logout();
+          if (decodedToken.exp * 1000 < new Date().getTime()) logout();
         }
     
     
         setuser(JSON.parse(localStorage.getItem('profile')));
       }, [location]);
-
 
   return (
     <nav className={`paddingx w-full flex items-center py-3 fixed top-0 z-10 bg-black-100 shadow-card `}>

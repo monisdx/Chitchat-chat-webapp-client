@@ -33,7 +33,6 @@
   .herosubtext {
     @apply text-[#dfd9ff] font-medium  sm:text-[20px] xs:text-[20px] text-[16px] lg:leading-[40px];
   }
-
  
 }
 
@@ -72,34 +71,50 @@
       #000000
     ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   }
+
+  .other_msg {
+    background: #2D3742;
+    /* backdrop-filter: blur(7.5px); */
+  }
+
+  .my_msg {
+    
+    background: linear-gradient(82deg, #5042A0 5.62%, #424BA0 106.89%);
+  }
+
+  .text2-gradient{
+    background: linear-gradient(82deg, #5042A0 5.62%, #424BA0 106.89%);
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+
+  }
+
+  .fixcontent{
+    overflow-wrap: anywhere;
+  }
   
 }
 
 div.scrollbar_style::-webkit-scrollbar{
-  width: 0.5em;
+  width: 0.3em;
 }
 
  ::-webkit-scrollbar-track{
-  background: #100d25;
+  background: #100d2500;
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb{
   background: #aaa6c3;
   border-radius: 10px;
-  border: 1px solid #100d25;
+  /* border: 3px solid #100d25; */
 }
 
 
-.other_msg {
-  background: #2D3742;
-  backdrop-filter: blur(7.5px);
-}
 
-.my_msg {
-  /* border-radius: 20px var(--Number, 0px) 4px 20px; */
-  background: linear-gradient(82deg, #5042A0 5.62%, #424BA0 106.89%);
-}
 
 .chat_gradient {
   background: radial-gradient(96.31% 86.81% at 0% 100%, #21414E 0%, rgba(33, 65, 78, 0.00) 100%),

@@ -14,16 +14,16 @@ const ChatPage = () => {
   const [groupmodel, setgroupmodel] = useState(false);
   const [updatemodel, setupdatemodel] = useState(false);
   const [selectedchat, setselectedchat] = useState(null);
-  const [fetch, setfetch] = useState(false);
-  console.log(selectedchat);
+  
+  // console.log(selectedchat);
 
-console.log(updatemodel);
+// console.log(updatemodel);
 
 
   return (
     <div className='flex flex-col relative'>
       <Navbar setsidebar={setsidebar}/>
-      <div className={`top-[170px] xs:top-[64px] z-1  flex p-8 xl:flex-row flex-col items-center xl:gap-20 gap-4 relative`}>
+      <div className={`top-[120px] xs:top-[64px] z-1  flex p-8 xl:flex-row flex-col items-center xl:gap-20 gap-4 relative`}>
         <div className="flex  w-full xl:flex-[0.3] h-[50vh] xl:h-[82vh]">
           <Chatlist selectedchat={selectedchat} setselectedchat={setselectedchat} setgroupmodel={setgroupmodel}/>   
         </div>

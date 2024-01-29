@@ -11,6 +11,7 @@ module.exports = {
         "purple-100": "#915eff",
         primary_container: "#272438",
         surface: "#1D1E33",
+        msg: "#2D3742",
         "black-100": "#100d25",
         "black-200": "#090325",
         "white-100": "#f3f3f3",
