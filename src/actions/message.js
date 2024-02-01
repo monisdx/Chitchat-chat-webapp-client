@@ -3,7 +3,6 @@ import * as api from '../api';
 export const addmessage = (text, chatId) =>async(dispatch)=>{
     try{
         const {data:{data}} = await api.addMessage(text, chatId);
-        console.log(data);
 
         dispatch({type:'ADD_MESSAGE' ,payload: data})
 
@@ -18,7 +17,7 @@ export const getmessage = (chatId) =>async(dispatch)=>{
     try{
         dispatch({type: 'START_LOADING_MSG'});
         const {data:{data}} = await api.getMessages(chatId);
-        console.log(data);
+        
 
         dispatch({type:'GET_MESSAGE' ,payload: data})
         dispatch({type: 'END_LOADING_MSG'});

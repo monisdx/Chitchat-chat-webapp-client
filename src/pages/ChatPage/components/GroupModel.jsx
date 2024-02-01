@@ -1,4 +1,3 @@
-
 import React, {useState} from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useDispatch , useSelector } from 'react-redux';
@@ -32,10 +31,10 @@ const GroupModel = ({groupmodel, setgroupmodel}) => {
   }
 
   const searchpost = () => {
-    console.log('hii')
+    
     if(search.trim()){
       dispatch(getUsersBySearch(search));
-      console.log(search);
+      
       navigate(`/chat/search?searchQuery=${search || 'none'}`);
     }
     else{
@@ -65,15 +64,13 @@ const GroupModel = ({groupmodel, setgroupmodel}) => {
 
     dispatch(creategroupchat(form));
     
-    
-    // setgroupmodel(!groupmodel);
     navigate('/chat');
     setsearch('');
     dispatch({type:'RESET_USERS'});
 
   }
   return (
-    <div className={` flex fixed top-0 left-0 w-full h-full  justify-center items-center ${groupmodel ? 'opacity-100 z-20' : 'opacity-0 z-[-1]' }  bg-black/50 backdrop-blur-sm duration-500`}>
+    <div className={` flex fixed top-0 left-0 w-full h-full  justify-center items-center ${groupmodel ? 'opacity-100 z-20' : 'opacity-0 z-[-1]' }  bg-black/50 backdrop-blur-sm duration-500 shadow-card`}>
       <div className={`relative flex flex-col justify-center items-center bg-black-100 p-4 w-[500px] rounded-xl ${groupmodel ? '' : 'scale-50'} duration-500 `}>
           <p className='text-white text-[25px] font-medium'> Create Group Chat </p>
           <form onSubmit={handlesubmit} className='flex flex-col w-full mt-4 gap-2'>

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API = axios.create({ baseURL : 'http://localhost:5000'});
+const API = axios.create({ baseURL : 'https://chitchat-server.vercel.app'});
 
 API.interceptors.request.use((req) => {
     if(localStorage.getItem('profile')) {
@@ -10,11 +10,11 @@ API.interceptors.request.use((req) => {
     return req;
 });
 
-export const signIn = (form) => API.post('/user/signin', form);
-export const signUp = (form) => API.post('/user/signup', form);
+export const signIn = (form) => API.post('/users/signin', form);
+export const signUp = (form) => API.post('/users/signup', form);
 
-export const getuser = (id) => API.get(`/user/${id}`);
-export const fetchUsersBySearch = (searchQuery) => API.get(`/user/search?searchQuery=${searchQuery || 'none'}`);
+// export const getuser = (id) => API.get(`/user/${id}`);
+export const fetchUsersBySearch = (searchQuery) => API.get(`/users/search?searchQuery=${searchQuery || 'none'}`);
 
 export const createChat = (id) => API.post('/chat', {userId: id});
 export const userChats = () => API.get(`/chat`);

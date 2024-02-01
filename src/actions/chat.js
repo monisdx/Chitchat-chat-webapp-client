@@ -17,7 +17,7 @@ export const userchats = () => async(dispatch) =>{
     try{
         dispatch({type: 'START_LOADING_CHATS'});
         const {data:{data}} = await api.userChats();
-        console.log("fetch")
+        
         dispatch({type: 'FETCH_USER_CHATS', payload: data});
         dispatch({type: 'END_LOADING_CHATS'});
     }

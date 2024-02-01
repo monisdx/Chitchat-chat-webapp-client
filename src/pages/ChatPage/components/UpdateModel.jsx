@@ -5,7 +5,7 @@ import { getUsersBySearch } from "../../../actions/user";
 import { renamegroupchat, addgroupchat, removegroupchat } from "../../../actions/chat";
 import loader from '../../../assets/loader.svg';
 
-const UpdateModel = ({selectedchat, setselectedchat, updatemodel, setupdatemodel}) => {
+const UpdateModel = ({ updatemodel, setupdatemodel}) => {
   
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -15,11 +15,7 @@ const UpdateModel = ({selectedchat, setselectedchat, updatemodel, setupdatemodel
     const [selectedusers, setselectedusers] = useState([]);
     const [name, setname] = useState('');
     const [search, setsearch] = useState('');
-    //  console.log(selectedchat);
-
-    console.log(chat);
-    console.log(chat1);
-    console.log(isLoading);
+    
     useEffect(()=>{
         if(chat1){
             setname(chat1?.chatname);
@@ -30,18 +26,19 @@ const UpdateModel = ({selectedchat, setselectedchat, updatemodel, setupdatemodel
   
     const handlekeypress = (e) => {
       if (e.keyCode === 13) {
-        console.log("search")
+        
         searchpost();
       }
     };
   
     const handleback = () => {
-      console.log('back')
+      
       setupdatemodel(!updatemodel);
       navigate('/chat');
-      setname('')
+      
       setsearch('');
-      // dispatch({type:'RESET_USERS'});
+      dispatch({type:'RESET_USERS'});
+      
     }
   
     const searchpost = () => {
@@ -56,55 +53,44 @@ const UpdateModel = ({selectedchat, setselectedchat, updatemodel, setupdatemodel
     }
   
     const handlerename = async() => {
-      console.log('rename')
+    
       await dispatch(renamegroupchat(chat1?._id,name));
-      // setselectedchat(chat);
-      // await dispatch({type: 'FETCH_CHAT', payload: chat})
-      setupdatemodel(!updatemodel)
-      // console.log(selectedchat);
-      // console.log('rename')
-      // handleback();
+   
+      handleback();
+    
     }
 
     const handleadd = async(id) => {
 
       if(chat1?.users.find((u)=>u._id === id)){
-        console.log("user already exist");
+        
         return
       }
-      console.log('add')
+      
       await dispatch(addgroupchat(chat1?._id,id))
 
-      // await dispatch({type: 'FETCH_CHAT', payload: chat})
+     handleback();
       
-
-      // setselectedchat(chat);
-      // console.log('add')
-      setupdatemodel(!updatemodel)
       
-      // handleback();
     }
 
     const handleremove = async(id) => {
 
       if(chat1?.groupAdmin?._id !== user?.result?._id && user?.result?._id !== id ){
-        console.log("only admin can remove users");
+      
         return
       }
-      console.log('remove');
+  
       await dispatch(removegroupchat(chat1?._id,id))
 
-      // await dispatch({type: 'FETCH_CHAT', payload: chat})
-      // setselectedchat(chat);
-      // console.log('remove')
-      setupdatemodel(!updatemodel)
-      
-      // handleback();
+   
+      handleback();
+
     }
     
 
     return (
-      <div className={` flex fixed top-0 left-0 w-full h-full  justify-center items-center ${updatemodel ? 'opacity-100 z-20' : 'opacity-0 z-[-1]' }  bg-black/50 backdrop-blur-sm duration-500`}>
+      <div className={` flex fixed top-0 left-0 w-full h-full  justify-center items-center ${updatemodel ? 'opacity-100 z-20' : 'opacity-0 z-[-1]' }  bg-black/50 backdrop-blur-sm duration-500 shadow-card`}>
         <div className={`relative flex flex-col justify-center items-center bg-black-100 p-4 w-[500px] rounded-xl ${updatemodel ? '' : 'scale-50'} duration-500 `}>
             <p className='text-white text-[25px] font-medium'> Update Group Chat </p>
             <div  className='flex flex-col w-full mt-4 gap-2'>
@@ -165,7 +151,7 @@ const UpdateModel = ({selectedchat, setselectedchat, updatemodel, setupdatemodel
   
               ) : (
                 <>
-                {selectedchat?.groupAdmin?._id === user?.result?._id && (
+                {chat1?.groupAdmin?._id === user?.result?._id && (
                   <div className='flex justify-center h-full items-center'>
                   <p className="text-secondary text-[20px]">no results</p>
                   </div>

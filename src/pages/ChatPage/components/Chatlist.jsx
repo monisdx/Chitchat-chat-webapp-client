@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import loader from '../../../assets/loader.svg';
 import { userchats } from "../../../actions/chat";
 
 
 
-const Chatlist = ({selectedchat, setselectedchat , setgroupmodel}) => {
+const Chatlist = ({setgroupmodel}) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const location = useLocation();
+ 
   const {chats,chat,chat1,isLoading} = useSelector((state)=> state.chats);
   const user = JSON.parse(localStorage.getItem('profile'));
 
@@ -17,7 +15,7 @@ const Chatlist = ({selectedchat, setselectedchat , setgroupmodel}) => {
   
  
   useEffect(()=>{
-    console.log('fetch')
+   
     dispatch(userchats());
   },[chat]);
   
@@ -49,6 +47,7 @@ const Chatlist = ({selectedchat, setselectedchat , setgroupmodel}) => {
                     </div>  
                     <div className="flex flex-col gap-1">
                       <p className={`text-[16px]  ${chat1?._id===chat?._id ? 'text-primary': 'text-white'}  group-hover:text-primary font-medium`}>{chat.chatname}</p>
+                      <p className={`text-[12px]  ${chat1?._id === chat?._id ? 'text-primary' :'text-secondary'} group-hover:text-primary font-medium`}>{chat?.latestmessage?.text.length  > 30 ? chat?.latestmessage?.text.substring(0, 30) + "..." : chat?.latestmessage?.text}</p>
                     </div>
                     </>
                   ) : (
@@ -59,7 +58,7 @@ const Chatlist = ({selectedchat, setselectedchat , setgroupmodel}) => {
                     </div>
                     <div className="flex flex-col gap-1">
                       <p className={`text-[16px]  ${chat1?._id === chat?._id ? 'text-primary':'text-white'}  group-hover:text-primary font-medium`}>{chat.users[0]._id===user?.result?._id ? chat.users[1].name :chat.users[0].name}</p>
-                      <p className={`text-[12px]  ${chat1?._id === chat?._id ? 'text-primary' :'text-secondary'} group-hover:text-primary font-medium`}>{chat.users[0]._id===user?.result?._id ? chat.users[1].email :chat.users[0].email}</p>
+                      <p className={`text-[12px]  ${chat1?._id === chat?._id ? 'text-primary' :'text-secondary'} group-hover:text-primary font-medium`}>{chat?.latestmessage?.text.length  > 30 ? chat?.latestmessage?.text.substring(0, 30) + "..." : chat?.latestmessage?.text}</p>
                     </div>
                     </>
                   )}

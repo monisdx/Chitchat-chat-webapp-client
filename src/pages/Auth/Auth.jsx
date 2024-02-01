@@ -20,7 +20,7 @@ const Auth = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  console.log(isLoading);
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
 

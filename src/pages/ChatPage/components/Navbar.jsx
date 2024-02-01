@@ -1,19 +1,22 @@
 import React,{ useState, useEffect } from 'react'
 import logo from '../../../assets/logo.png'
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation} from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { jwtDecode } from 'jwt-decode';
+import { socket } from './Chatbox';
 
 const Navbar = ({setsidebar}) => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const location = useLocation();
     const [user, setuser] = useState(JSON.parse(localStorage.getItem('profile')));
    
 
 
     const logout = () => {
         dispatch({type: 'LOGOUT'});
+        socket.disconnect();
         navigate('/');
         setuser(null);
       }

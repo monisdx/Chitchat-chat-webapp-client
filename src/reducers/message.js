@@ -9,7 +9,19 @@ const messageReducer = ( state = { isLoading:false,msg:null, messages: [] }, act
         case 'GET_MESSAGE': 
             return { ...state, messages: action.payload};
         case 'ADD_NEWMESSAGE':
-            return {...state, messages: [...state.messages, action.payload]}    
+            if(state.messages.length == 0){
+                return {...state, messages: [...state.messages, action.payload]}    
+            }
+            else{
+                let prevmsg = state.messages[state.messages.length-1];
+                if(prevmsg._id !== action.payload._id ){
+                    return {...state, messages: [...state.messages, action.payload]}    
+                }
+                else{
+                    return {...state, messages: [...state.messages]}    
+                }
+            }
+            
        
         default:
             return state;    

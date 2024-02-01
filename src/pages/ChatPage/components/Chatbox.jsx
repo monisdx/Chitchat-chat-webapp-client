@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import moment from 'moment';
 import { useDispatch, useSelector } from "react-redux";
 import loader from "../../../assets/loader.svg";
 import { addmessage, getmessage } from "../../../actions/message";
@@ -10,49 +10,74 @@ const ENDPOINT = "http://localhost:5000";
 var socket, selectedchatcompare;
 
 
+export {socket};
 
-const Chatbox = ({ selectedchat, setselectedchat, setupdatemodel }) => {
+const Chatbox = ({ setupdatemodel }) => {
   const user = JSON.parse(localStorage.getItem("profile"));
   const dispatch = useDispatch();
   const messageRef = useRef();
   const [message, setmessage] = useState("");
   const [socketConnected, setsocketConnected] = useState(false);
   const [onlineusers, setonlineusers] = useState([]);
+  const [online, setonline] = useState(false);
   const [typing, settyping] = useState(false);
   const [istyping, setistyping] = useState(false);
   const { chat1 } = useSelector((state)=> state.chats);
   const { messages, msg, IsLoading } = useSelector((state) => state.messages);
 
-  console.log(typing);
-  console.log(istyping);
-  console.log(msg);
-  console.log(messages);
   
-
   useEffect(() => {
     socket = io(ENDPOINT);
     socket.emit('setup', user?.result);
     socket.on('connected', ()=> setsocketConnected(true));
-    socket.on('typing', ()=> setistyping(true));
-    socket.on('stop typing', ()=> setistyping(false));
+    socket.on('typing', ([user, chat])=> {
+      if(user?.result?._id !== user){
+        setistyping(true);
+      }
+    });
+    socket.on('stop typing', ([user, chat])=>{
+      if(user?.result?._id !== user){
+        setistyping(false);
+      }
+    });
 
   }, []);
 
+ 
+ useEffect(()=>{
+ 
+  socket.on('get online users',(users)=>{
+    setonlineusers(users);
+    
+  });
+
+ },[]);
+
+ useEffect(()=>{
+
+  
+  const chatmembers = chat1?.users?.find((u)=> u?._id !== user?.result?._id);
+  const online = onlineusers?.find((u)=>u?.userId === chatmembers?._id );
+  if(online){
+    setonline(true);
+  }else{
+    
+    setonline(false)
+  }
+
+ },[onlineusers]);
+
 
   useEffect (() => {
+
     if(chat1 !== null){
      dispatch(getmessage(chat1?._id)).then(()=>{
-
-    selectedchatcompare = chat1;
-    socket.emit('join chat', chat1?._id);
-
     messageRef?.current?.scrollIntoView({behavior: 'smooth'})
-
      })
     }
-    
 
   }, [chat1,msg]);
+
 
   useEffect(()=>{
 
@@ -62,24 +87,46 @@ const Chatbox = ({ selectedchat, setselectedchat, setupdatemodel }) => {
 
   },[msg]);
 
+  useEffect(()=> {
+
+    messageRef?.current?.scrollIntoView({behavior: 'smooth'})
+    
+
+  },[messages])
+
 
   useEffect(()=>{
-    console.log('message received');
+    
+    
     socket.on('message received', (newmessagereceived)=>{
+      
       if(!selectedchatcompare || selectedchatcompare?._id !== newmessagereceived?.chatId?._id){
         //give notification
       }
       else{
-        dispatch({type: 'ADD_NEWMESSAGE', payload:newmessagereceived});
+          dispatch({type: 'ADD_NEWMESSAGE', payload:newmessagereceived});
       }
-    })
-  });
+
+      }
+    )
+  },[]);
+
+  useEffect(()=>{
+    if(chat1){
+      selectedchatcompare = chat1;
+      socket.emit('join chat', chat1?._id);
+      
+    }
+
+  },[chat1]);
 
   const handlesend = async() => {
-   
+   if(!message.trim())
+   return;
+
     await dispatch(addmessage(message, chat1?._id))
     setmessage(""); 
-    messageRef?.current?.scrollIntoView({behavior: 'smooth'}) 
+
   };
 
   const handlechange = (e) => {
@@ -88,7 +135,7 @@ const Chatbox = ({ selectedchat, setselectedchat, setupdatemodel }) => {
 
     if(!typing){
       settyping(true);
-      socket.emit('typing', chat1?._id);
+      socket.emit('typing', [user?.result?._id , chat1]);
     }
 
     const lasttypingtime = new Date().getTime();
@@ -99,14 +146,13 @@ const Chatbox = ({ selectedchat, setselectedchat, setupdatemodel }) => {
       const timediff = timenow - lasttypingtime;
 
       if(timediff >= timerlength && typing){
-        socket.emit('stop typing', chat1?._id);
+        socket.emit('stop typing', [user?.result?._id, chat1]);
         settyping(false);
       }
 
     }, timerlength);
 
   }
-
   
   return (
     <div className="flex flex-col justify-between chat_gradient w-full rounded-[30px]">
@@ -144,7 +190,10 @@ const Chatbox = ({ selectedchat, setselectedchat, setupdatemodel }) => {
                     ? chat1.users[1].name
                     : chat1.users[0].name}
                 </p>
-                { istyping && <p className='text-[12px] text-secondary font-medium'>typing...</p>}
+                { istyping ? (<p className='text-[12px] text-secondary font-medium'>typing...</p>) : (
+                  online ? (<p className='text-[12px] text-secondary font-medium'>online</p>) : (<></>)
+                  
+                )}
                 </div>
               </>
             )}
@@ -185,6 +234,9 @@ const Chatbox = ({ selectedchat, setselectedchat, setupdatemodel }) => {
                           <p className="text-white text-[14px] ">
                             {message.text}
                           </p>
+                          <p className="text-secondary text-[10px] ">
+                            {moment(message.createdAt).calendar()}
+                          </p>
                         </div>
                       </div>
                     ))
@@ -214,26 +266,23 @@ const Chatbox = ({ selectedchat, setselectedchat, setupdatemodel }) => {
             <div
               className={`flex justify-center items-center bg-tertiary rounded-[30px] w-full py-3 px-6 gap-4`}
             >
-              <span className="material-icons-outlined text1-gradient text-[30px] cursor-pointer rotate-45 ">
-                attachment
+              {/* <span className="material-icons-outlined text1-gradient text-[30px] cursor-pointer ">
+              sentiment_satisfied_alt
               </span>
+             */}
               <input
                 type="text"
                 name="message"
-                placeholder="Message"
+                placeholder="Type a message"
                 value={message}
                 onChange={handlechange}
                 className="bg-transparent placeholder:text-secondary w-full  text-white  outline-none font-medium"
               />
-              <span className="material-icons-outlined text1-gradient text-[30px] cursor-pointer">
-                sentiment_satisfied_alt
-              </span>
+            
             </div>
             <button onClick={handlesend}>
               <span
-                className={`material-icons-round ${
-                  message ? "block" : "hidden"
-                } text1-gradient text-[35px]`}
+                className={`material-icons-round text1-gradient text-[35px]`}
                 disabled={!message.length}
               >
                 send
