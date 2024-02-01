@@ -5,7 +5,7 @@ import loader from "../../../assets/loader.svg";
 import { addmessage, getmessage } from "../../../actions/message";
 import io from "socket.io-client";
 
-const ENDPOINT = "http://localhost:5000";
+const ENDPOINT = "https://chitchat-server.vercel.app";
 
 var socket, selectedchatcompare;
 
