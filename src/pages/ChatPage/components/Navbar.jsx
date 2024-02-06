@@ -16,7 +16,7 @@ const Navbar = ({setsidebar}) => {
 
     const logout = () => {
         dispatch({type: 'LOGOUT'});
-        socket.disconnect();
+        socket?.disconnect();
         navigate('/');
         setuser(null);
       }

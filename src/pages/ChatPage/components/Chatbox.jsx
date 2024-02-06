@@ -5,7 +5,8 @@ import loader from "../../../assets/loader.svg";
 import { addmessage, getmessage } from "../../../actions/message";
 import io from "socket.io-client";
 
-const ENDPOINT = "https://chitchat-server.vercel.app";
+// const ENDPOINT = "https://chitchat-server.vercel.app";
+const ENDPOINT = "http://localhost:5000"
 
 var socket, selectedchatcompare;
 
@@ -23,23 +24,32 @@ const Chatbox = ({ setupdatemodel }) => {
   const [typing, settyping] = useState(false);
   const [istyping, setistyping] = useState(false);
   const { chat1 } = useSelector((state)=> state.chats);
-  const { messages, msg, IsLoading } = useSelector((state) => state.messages);
+  const { messages, msg, isLoading } = useSelector((state) => state.messages);
 
   
-
+console.log(isLoading);
   useEffect(() => {
     socket = io(ENDPOINT);
     socket.emit('setup', user?.result);
     socket.on('connected', ()=> setsocketConnected(true));
-    socket.on('typing', ([user, chat])=> {
-      if(user?.result?._id !== user){
+    socket.on('typing', ([u, chat])=> {
+      console.log(user?.result?._id);
+      console.log(u);
+      if(user?.result?._id !== u){
+        console.log(u);
         setistyping(true);
       }
+     
     });
-    socket.on('stop typing', ([user, chat])=>{
-      if(user?.result?._id !== user){
+    socket.on('stop typing', ([u, chat])=>{
+      console.log(user?.result?._id);
+      console.log('call');
+      console.log(u);
+      if(user?.result?._id !== u){
         setistyping(false);
       }
+     
+     
     });
 
   }, []);
@@ -52,10 +62,11 @@ const Chatbox = ({ setupdatemodel }) => {
     
   });
 
- },[]);
+ },[chat1]);
 
  useEffect(()=>{
 
+  
   
   const chatmembers = chat1?.users?.find((u)=> u?._id !== user?.result?._id);
   const online = onlineusers?.find((u)=>u?.userId === chatmembers?._id );
@@ -66,19 +77,18 @@ const Chatbox = ({ setupdatemodel }) => {
     setonline(false)
   }
 
- },[onlineusers]);
+ },[onlineusers,chat1]);
 
 
   useEffect (() => {
 
     if(chat1 !== null){
      
-     dispatch(getmessage(chat1?._id)).then(()=>{
-    messageRef?.current?.scrollIntoView({behavior: 'smooth'})
-     })
+     dispatch(getmessage(chat1?._id))
+   
     }
 
-  }, [chat1,msg]);
+  }, [chat1]);
 
 
   useEffect(()=>{
@@ -128,7 +138,6 @@ const Chatbox = ({ setupdatemodel }) => {
 
     dispatch(addmessage(message, chat1?._id))
     setmessage(""); 
-   
 
   };
 
@@ -153,7 +162,7 @@ const Chatbox = ({ setupdatemodel }) => {
         settyping(false);
       }
 
-    }, timerlength);
+    }, 3000);
 
   }
   
@@ -204,7 +213,7 @@ const Chatbox = ({ setupdatemodel }) => {
           <div className="h-[64vh] relative">
             <div className="bg-chat-pattern h-full absolute inset-0 opacity-10 bg-contain"></div>
             <div className="relative inset-0 flex flex-col gap-1 px-4  overflow-auto scrollbar_style h-full">
-              {!IsLoading ? (
+              {!isLoading ? (
                 <>
                   <div className='flex flex-col gap-1 justify-end'>
                   {messages?.length ? (
