@@ -1,4 +1,4 @@
-const messageReducer = ( state = { isLoading:false,msg:null, messages: [] }, action) => {
+const messageReducer = ( state = { isLoading:true ,msg:null, messages: [] }, action) => {
     switch (action.type){
         case 'START_LOADING_MSG':
             return {...state, isLoading: true};

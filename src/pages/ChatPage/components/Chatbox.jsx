@@ -72,9 +72,8 @@ const Chatbox = ({ setupdatemodel }) => {
   useEffect (() => {
 
     if(chat1 !== null){
-     dispatch({type: 'START_LOADING_MSG'});
+     
      dispatch(getmessage(chat1?._id)).then(()=>{
-     dispatch({type: 'END_LOADING_MSG'});
     messageRef?.current?.scrollIntoView({behavior: 'smooth'})
      })
     }
@@ -123,12 +122,13 @@ const Chatbox = ({ setupdatemodel }) => {
 
   },[chat1]);
 
-  const handlesend = async() => {
+  const handlesend = () => {
    if(!message.trim())
    return;
 
-    await dispatch(addmessage(message, chat1?._id))
+    dispatch(addmessage(message, chat1?._id))
     setmessage(""); 
+   
 
   };
 

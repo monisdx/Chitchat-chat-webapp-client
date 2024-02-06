@@ -15,11 +15,11 @@ export const addmessage = (text, chatId) =>async(dispatch)=>{
 
 export const getmessage = (chatId) =>async(dispatch)=>{
     try{
-        
+        dispatch({type: 'START_LOADING_MSG'});
         const {data:{data}} = await api.getMessages(chatId);
         
-
         dispatch({type:'GET_MESSAGE' ,payload: data})
+        dispatch({type: 'END_LOADING_MSG'});
         
 
     }
