@@ -25,6 +25,7 @@ const Chatbox = ({ setupdatemodel }) => {
   const { chat1 } = useSelector((state)=> state.chats);
   const { messages, msg, IsLoading } = useSelector((state) => state.messages);
 
+  console.log(IsLoading);
   
   useEffect(() => {
     socket = io(ENDPOINT);
@@ -201,7 +202,7 @@ const Chatbox = ({ setupdatemodel }) => {
           <div className="h-[64vh] relative">
             <div className="bg-chat-pattern h-full absolute inset-0 opacity-10 bg-contain"></div>
             <div className="relative inset-0 flex flex-col gap-1 px-4  overflow-auto scrollbar_style h-full">
-              {!IsLoading ? (
+              {IsLoading ? (
                 <>
                   <div className='flex flex-col gap-1 justify-end'>
                   {messages?.length ? (
